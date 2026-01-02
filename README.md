@@ -1,10 +1,14 @@
 # Container Security Sandbox
 
-## Overview
-Hands-on lab demonstrating container security misconfigurations, attacks, and hardening.
+A hands-on Linux-based lab demonstrating common container security
+misconfigurations, exploitation techniques, and hardening strategies.
 
-## Quick Start
-```bash
-git clone git@github.com:markjoehayes/container-security-sandbox.git
-cd container-security-sandbox
-./scripts/setup.sh
+## Goals
+- Demonstrate insecure container configurations
+- Show controlled attack scenarios
+- Apply and validate security mitigations
+- Automate security checks
+
+## Status
+Initial setup and research phase
+
