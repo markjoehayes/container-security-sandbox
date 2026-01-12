@@ -28,5 +28,7 @@ Privleged containers significantly weaken isolation boundaries and may allow att
 - Modify kernel parameters
 - Escape the container environment
 
+Even when capability listings are ambiguous in minimal container images, behavioral testing such as accessing /dev/kmsg, reading kernel logs with dmesg, and successfully mounting filesystems confirms that privileged containers significantly weaken isolation and expose host-level interfaces.
+
 ### Learning Objective
 Understand how Linux capabilities and device access affect container isolation and why privileged containers should be avoided.
