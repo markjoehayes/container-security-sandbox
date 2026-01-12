@@ -13,3 +13,14 @@ limiting access to privileged system resources.
 This configuration mitigates risks associated with default root
 containers by enforcing the principle of least privilege.
 
+
+## Drpped Capabilities Container
+
+### Description
+This container runs as non-root user with all Linux capabilities explicity dropped at runtime.
+
+### Security Benefit
+Dropping capablities significantly reduces the container's ability to interact with the host system, even if the application is compromised.
+
+### Mitigation
+This configuration replaces privileged containers by enforcing least privilege through explicit capability restrictions.
