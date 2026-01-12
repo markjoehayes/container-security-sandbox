@@ -32,3 +32,21 @@ Even when capability listings are ambiguous in minimal container images, behavio
 
 ### Learning Objective
 Understand how Linux capabilities and device access affect container isolation and why privileged containers should be avoided.
+
+
+## Docker Socket Mounted Container
+
+### Description
+This container has the host Docker socket mounted at /var/run/docker.sock, allowing it to communicate directly with the Docker daemon running on the host.
+
+### Why this is Dangerous
+Access to the Docker socket effectively grants root-level access to the host system. An attacker can:
+- Start new privileged containers
+- Mount the host filesystem
+- Modify or delete containers and images
+
+### Demonstrated Risk
+Using the Docker socket, the container was able to start a new container with the host filesystem mounted, demonstrating full host control.
+
+### Learning Objective
+Undertsand why mounting the Docker socket into containers is equivelent to granting host root access and should be avoided.
