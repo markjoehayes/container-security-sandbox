@@ -13,3 +13,6 @@ Running containers as root increases the risk of:
 If combined with other misconfigurations, a root container may allow
 attackers to impact the host system.
 
+### Learning Objective
+Understand why rootless containers are recommended and how default container privileges affect security
+

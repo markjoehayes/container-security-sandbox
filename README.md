@@ -10,5 +10,5 @@ misconfigurations, exploitation techniques, and hardening strategies.
 - Automate security checks
 
 ## Status
-Initial setup and research phase
+Week 1 - Initial setup and research phase
 
