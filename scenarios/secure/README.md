@@ -24,3 +24,24 @@ Dropping capablities significantly reduces the container's ability to interact w
 
 ### Mitigation
 This configuration replaces privileged containers by enforcing least privilege through explicit capability restrictions.
+
+
+## Hardened Container Without Docker Socket
+
+### Description
+This container demonstrates a hardened runtime configuration
+without access to the Docker socket and with strict security
+controls applied at runtime.
+
+### Security Controls
+- Non-root user
+- No Linux capabilities
+- Read-only root filesystem
+- no-new-privileges enabled
+- No Docker socket mount
+
+### Security Benefit
+This configuration prevents container escape via Docker daemon
+access and limits post-exploitation impact even if the application
+is compromised.
+
