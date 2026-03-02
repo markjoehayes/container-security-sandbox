@@ -1,8 +1,3 @@
-Absolutely — here it is cleanly formatted in **pure Markdown** so you can copy/paste directly into `README.md`.
-
----
-
-```markdown
 # Container Security Sandbox
 
 A hands-on Linux lab demonstrating container misconfigurations, real exploitation techniques, and defensive hardening strategies.
@@ -216,7 +211,7 @@ This lab should only be used in isolated, controlled environments.
 
 ## Author
 
-Mark Williams
+Mark J. Hayes
 
 ```
 
