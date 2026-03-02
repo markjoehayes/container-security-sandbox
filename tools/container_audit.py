@@ -33,7 +33,10 @@ def check_readonly(config):
     return config["HostConfig"].get("ReadonlyRootfs", False)
 
 def check_capabilities(config):
-    caps = config["HostConfig"].get("CapDrop", [])
+    if config["HostConfig"].get("Priviliged", False):
+        return False
+
+    caps = config["HostConfig"].get("CapDrop") or []
     return "ALL" in caps
 
 def audit(container_id):
