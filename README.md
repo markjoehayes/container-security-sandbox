@@ -87,7 +87,7 @@ It evaluates a running container for common security risks and assigns severity 
 ### 1. Clone the repository
 
 ```bash
-git clone <repo-url>
+git clone git@github.com:markjoehayes/container-security-sandbox.git
 cd container-security-sandbox
 ````
 
