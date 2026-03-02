@@ -3,6 +3,7 @@
 import json
 import subprocess
 import sys
+import argparse
 
 SEVERITY_SCORES = {
         "CRITICAL": 5,
@@ -68,43 +69,80 @@ def calculate_risk(findings):
 def audit(container_id):
     config = get_container_info(container_id)
     findings = []
+    report_data = []
 
-    print(f"\nAuditing container: {container_id}")
-    print("=" * 60)
+    checks = [
+            ("Running as root", check_root(config), "HIGH"),
+            ("Privileged mode", check_privileged(config), "CRITICAL"),
+            ("PID namespace host", check_pid_namespace(config), "HIGH"),
+            ("Docker socket mounted", check_docker_socket(config), "CRITICAL"),
+            ("Read-only rootfs", not check_readonly(config), "MEDIUM"),
+            ("Dropped all capabilities", not check_capabilities(config), "MEDIUM"),
+    ]
 
-    report("Running as root",
-           check_root(config),
-           "HIGH",
-           findings)
+    for issue, failed, severity in checks:
+        if failed:
+            findings.append((issue, severity))
 
-    report("Priviliged mode",
-           check_privileged(config),
-           "HIGH",
-           findings)
-
-    report("PID namespace host",
-           check_pid_namespace(config),
-           "HIGH",
-           findings)
-
-    report("Docker socket mounted",
-           check_docker_socket(config),
-           "CRITICAL",
-           findings)
-
-    report("Read-only rootfs",
-           not check_readonly(config),
-           "MEDIUM",
-           findings)
-
-    report("Dropped all capabilities",
-           not check_capabilities(config),
-           "MEDIUM",
-           findings)
-
-    print("=" * 60)
+        report_data.append({
+            "issue": issue,
+            "status": "FAIL" if failed else "PASS",
+            "severity": severity if failed else None
+        })
 
     risk_level = calculate_risk(findings)
+
+    if json_output:
+        output = {
+                "container": container_id,
+                "overall_risk": risk_level,
+                "findings": report_data
+        }
+        print(json.dumps(output, indent=2))
+    else:
+        print(f"\nAuditing container: {container_id}")
+        print("=" * 60)
+
+        for item in report_data:
+            if item["status"] == "FAIL":
+                print(f"{item['issue']} {item['severity']}")
+            else:
+                print(f"{item['issue']}: OK")
+
+
+#    report("Running as root",
+#           check_root(config),
+#           "HIGH",
+#           findings)
+
+#    report("Priviliged mode",
+#           check_privileged(config),
+#           "HIGH",
+#           findings)
+
+#    report("PID namespace host",
+#           check_pid_namespace(config),
+#           "HIGH",
+#           findings)
+
+#    report("Docker socket mounted",
+#           check_docker_socket(config),
+#           "CRITICAL",
+#           findings)
+
+#   report("Read-only rootfs",
+#           not check_readonly(config),
+#           "MEDIUM",
+#           findings)
+
+#   report("Dropped all capabilities",
+#           not check_capabilities(config),
+#           "MEDIUM",
+#           findings)
+
+    print("=" * 60)
+
+#    risk_level = calculate_risk(findings)
     print(f"Overall Risk Level: {risk_level}")
 
     # exit non-zero if insecure
@@ -121,8 +159,13 @@ def audit(container_id):
 #    print("=" * 50)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: ./container_audit.py <container_id>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Container Runtime Audit Tool")
+    parser.add_argument("container", help="Container name or ID")
+    parser.add_argument("--json", action="store_true", help="Output results in JSON format")
+    args = parser.parse_args()
+    audit(args.container, args.json)
+ #   if len(sys.argv) != 2:
+ #       print("Usage: ./container_audit.py <container_id>")
+ #       sys.exit(1)
 
-    audit(sys.argv[1])
+ #   audit(sys.argv[1])
