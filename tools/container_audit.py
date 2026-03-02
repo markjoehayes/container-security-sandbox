@@ -50,7 +50,7 @@ def check_capabilities(config):
 def report(issue, failed, severity, findings):
     if failed:
         findings.append((issue, severity))
-        print(f"{issue} {severity}")
+        print(f"{issue}: {severity}")
     else:
         print(f"{issue}: OK")
 
