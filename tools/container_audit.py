@@ -66,7 +66,7 @@ def calculate_risk(findings):
         return "LOW"
     return "NONE"
 
-def audit(container_id):
+def audit(container_id, json_output=False):
     config = get_container_info(container_id)
     findings = []
     report_data = []
