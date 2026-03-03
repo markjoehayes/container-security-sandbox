@@ -32,8 +32,6 @@ def get_container_info(container_id):
     except (json.JSONDecodeError, IndexError):
         print(f"[ERROR] Failed to parse docker inspoect output.")
         sys.exit(1)
-#    output = run_cmd(["docker", "inspect", container_id])
-#    return json.loads(output)[0]
 
 def check_root(config):
     user = config["Config"].get("User", "")
@@ -129,54 +127,14 @@ def audit(container_id, json_output=False):
             else:
                 print(f"{item['issue']}: OK")
 
-
-#    report("Running as root",
-#           check_root(config),
-#           "HIGH",
-#           findings)
-
-#    report("Priviliged mode",
-#           check_privileged(config),
-#           "HIGH",
-#           findings)
-
-#    report("PID namespace host",
-#           check_pid_namespace(config),
-#           "HIGH",
-#           findings)
-
-#    report("Docker socket mounted",
-#           check_docker_socket(config),
-#           "CRITICAL",
-#           findings)
-
-#   report("Read-only rootfs",
-#           not check_readonly(config),
-#           "MEDIUM",
-#           findings)
-
-#   report("Dropped all capabilities",
-#           not check_capabilities(config),
-#           "MEDIUM",
-#           findings)
-
     print("=" * 60)
 
-#    risk_level = calculate_risk(findings)
     print(f"Overall Risk Level: {risk_level}")
 
     # exit non-zero if insecure
     if risk_level in ["HIGH", "CRITICAL"]:
         sys.exit(1)
 
-#    print("Running as root:", "YES" if check_root(config) else "OK")
-#    print("Privileged mode:", "YES" if check_privileged(config) else "OK")
-#    print("PID namespace host:", "YES" if check_pid_namespace(config) else "OK")
-#    print("Docker socket mounted:", "YES" if check_docker_socket(config) else "OK")
-#    print("Read-only rootfs:", "OK" if check_readonly(config) else "NO")
-#    print("Dropped all capabilities:", "OK" if check_capabilities(config) else "NO")
-
-#    print("=" * 50)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Container Runtime Audit Tool")
@@ -184,8 +142,3 @@ if __name__ == "__main__":
     parser.add_argument("--json", action="store_true", help="Output results in JSON format")
     args = parser.parse_args()
     audit(args.container, args.json)
- #   if len(sys.argv) != 2:
- #       print("Usage: ./container_audit.py <container_id>")
- #       sys.exit(1)
-
- #   audit(sys.argv[1])
