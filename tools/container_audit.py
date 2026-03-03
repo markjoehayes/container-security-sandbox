@@ -17,8 +17,23 @@ def run_cmd(cmd):
     return result.stdout.strip()
 
 def get_container_info(container_id):
-    output = run_cmd(["docker", "inspect", container_id])
-    return json.loads(output)[0]
+    result = subprocess.run(
+            ["docker", "inspect", container_id],
+            capture_output=True,
+            text=True
+    )
+
+    if result.returncode != 0:
+        print(f"[ERROR] Container '{container_id}' not found.")
+        sys.exit(1)
+    try:
+        data = json.loads(result.stdout)
+        return data[0]
+    except (json.JSONDecodeError, IndexError):
+        print(f"[ERROR] Failed to parse docker inspoect output.")
+        sys.exit(1)
+#    output = run_cmd(["docker", "inspect", container_id])
+#    return json.loads(output)[0]
 
 def check_root(config):
     user = config["Config"].get("User", "")
