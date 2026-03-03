@@ -58,6 +58,7 @@ echo "4. Demontrating attack based on audit findings..."
 echo "   Finding #1: Container runs as root (HIGH severity):"
 echo "   Command: docker exec demo-insecure whoami"
 echo "   Result: $(docker exec demo-insecure whoami) "
+echo ""
 
 
 echo "   Finding #2: Can access sensitive files (due to root)"
