@@ -40,8 +40,12 @@ def check_docker_socket(config):
 def check_readonly(config):
     return config["HostConfig"].get("ReadonlyRootfs", False)
 
+def check_no_new_privileges(config):
+    security_opts = config["HostConfig"].get("SecurityOpt") or []
+    return any("no-new-privileges" in opt for opt in security_opts)
+
 def check_capabilities(config):
-    if config["HostConfig"].get("Priviliged", False):
+    if config["HostConfig"].get("Privileged", False):
         return False
 
     caps = config["HostConfig"].get("CapDrop") or []
@@ -78,6 +82,7 @@ def audit(container_id, json_output=False):
             ("Docker socket mounted", check_docker_socket(config), "CRITICAL"),
             ("Read-only rootfs", not check_readonly(config), "MEDIUM"),
             ("Dropped all capabilities", not check_capabilities(config), "MEDIUM"),
+            ("no-new-privileges not set", not check_no_new_privileges(config), "HIGH"),
     ]
 
     for issue, failed, severity in checks:
