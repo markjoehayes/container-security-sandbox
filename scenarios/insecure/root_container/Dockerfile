@@ -6,7 +6,11 @@ RUN apt-get update && apt-get install -y \
     iproute2 \
     procps \
     vim \
-    net-tools
+    net-tools \
+    sudo \
+    vim
 
-CMD ["/bin/bash"]
+RUN echo "DB_PASSWORD=super_secret" > /etc/app_secrets.env
+
+CMD ["sleep", "infinity"]
 
