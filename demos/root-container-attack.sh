@@ -5,6 +5,7 @@ echo "=========================================="
 echo "| Root Container Attack Demo with Audit  |"
 echo "=========================================="
 echo ""
+echo ""
 
 # Clean up any existing container with same name
 echo "0. Cleaning up old containers..."
