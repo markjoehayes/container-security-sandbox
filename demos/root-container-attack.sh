@@ -49,7 +49,7 @@ fi
 # Run security Audit
 echo "3. Running security audit on container:"
 echo "================================================"
-../tools/container_audit.py demo-insecure
+./tools/container_audit.py demo-insecure
 AUDIT_RESULT=$?
 echo "================================================"
 
@@ -79,3 +79,9 @@ echo ""
 echo "5. Cleanup..."
 docker stop demo-insecure > /dev/null
 docker rm demo-insecure > /dev/null
+echo "CLEANUP COMPLETE"
+
+echo "========================================"
+echo "|         Demo Complete                |"
+echo "|    Container Risk level: CRITICAL    |"
+echo "========================================"
