@@ -27,6 +27,7 @@ The project includes:
 - Hardened container baselines
 - Documented attack narratives
 - A custom container security audit tool
+- Automated demo scripts: secure, insecure and comparison
 
 ---
 
