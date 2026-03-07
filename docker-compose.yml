@@ -40,15 +40,14 @@ services:
   insecure-writable:
     build: ./scenarios/insecure/writable_root
     container_name: sanbox-writable-insecure
-    pid: host
     networks:
-      -lab-network
-      -attack-path
+      - lab-network
+      - attack-path
 
   # ============ HARDENED COUNTERPARTS ============
   secure-non-root:
-    build:   ./scenarios/secure/non-root_container
-    container_name: sandbox-non-root-secure
+    build: ./scenarios/secure/non-root_container
+    container_name: sandbox-nonroot-secure
     user: "1001:1001"
     read_only: true
     cap_drop:

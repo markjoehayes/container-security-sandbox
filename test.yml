@@ -1,0 +1,11 @@
+# Create a test file with just the problematic service
+version: '3.8'
+services:
+  test:
+    build: ./scenarios/insecure/writable_root
+    networks:
+      - test-net
+networks:
+  test-net:
+    driver: bridge
+
