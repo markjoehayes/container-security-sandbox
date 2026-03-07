@@ -21,13 +21,20 @@ echo ""
 
 # Show running containers
 echo "3. Running containers:"
-docker-compose ps
+docker-compose ps --format "table {{.Name}}\t{{.Status}}\t{{.Services}}"
 echo ""
 
-# Run security audit
+# Run security audit on all containers
 echo "4. Running comprehensive security audit:"
 echo "════════════════════════════════════════════════════════════"
-./compose/scripts/run-security-audit.sh
+for container in $(docker ps --format "{{.Names}}" | grep sandbox); do
+    if [[ $container != "auditor" ]] && [[ $container != "attacker" ]]; then
+        echo "Container: $container"
+        python3 tools/container_audit.py $container 2>/dev/null || docker exec sandbox-auditor python3 /tools/container_audit.py $container 2>/dev/null
+        echo "===================================================="
+    fi
+done
+
 echo ""
 
 # Demonstrate attacks

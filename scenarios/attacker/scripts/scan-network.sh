@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Network scanning script for attacker container
 
 echo "🔍 Network Discovery Scan"
