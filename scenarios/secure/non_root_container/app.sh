@@ -1,4 +1,3 @@
-# scenarios/secure/root_container/app.sh
 #!/bin/bash
 
 echo "Secure Container Started"

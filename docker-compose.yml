@@ -46,7 +46,7 @@ services:
 
   # ============ HARDENED COUNTERPARTS ============
   secure-non-root:
-    build: ./scenarios/secure/non-root_container
+    build: ./scenarios/secure/non_root_container
     container_name: sandbox-nonroot-secure
     user: "1001:1001"
     read_only: true
@@ -63,7 +63,7 @@ services:
       - production-island
 
   secure-dropped-caps:
-    build: ./scenarios/secure/privileged_container
+    build: ./scenarios/secure/dropped_capabilities
     container_name: sandbox-caps-secure
     user: "1001:1001"
     read_only: true
@@ -78,33 +78,33 @@ services:
     networks:
       - lab-network
       - production-island
-      
-    secure-no-docker-sock:
-      build: ./scenarios/insecure/no_docker_socket
-      container_name: sandbox-nosock-secure
-      user: "1001:1001"
-      read_only: true
-      cap_drop:
-        - ALL
-      cap_add:
-        - NET_BIND_SERVICE
-      security_opt:
-        - no-new-privileges: true
-      tmpfs:
-        - /tmp:noexec, nosuid, size=100m
-      networks:
-        - lab-network
-        - production-island
+   
+  secure-no-docker-sock:
+    build: ./scenarios/secure/no_docker_socket
+    container_name: sandbox-nosock-secure
+    user: "1001:1001"
+    read_only: true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+    networks:
+      - lab-network
+      - production-island
 
-      secure-readonly:
-        build: ./scenarios/secure/read_only_root
-        container_name: sanbox-readonly-secure
-        read_only: true
-        tmpfs:
-          - /tmp:noexec, nosuid,size=100m
-        networks:
-          - lab-network
-          - production-island
+  secure-readonly:
+    build: ./scenarios/secure/read_only_root
+    container_name: sandbox-readonly-secure
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+    networks:
+      - lab-network
+      - production-island
 
   # ============ ATTACKER MACHINE ============
   attacker:
@@ -137,33 +137,6 @@ services:
       - ./tools:/tools:ro
     networks:
       - management
-
-  networks:
-    lab-network:
-      driver: bridge
-      ipam:
-        config:
-          - subnet: 172.22.0.0/16
-
-  attack-path:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.22.0.0/16
-
-  managment:
-    driver: bridge
-    internal: true
-    ipam:
-      config:
-        - subnet: 172.23.0.0/16
-
-
-    command: tail -f /dev/null
-    labels:
-      purpose: "security-auditing"
-      description: "Continuous security auditor"
-
   # ============ NETWORK SERVICES ============
   network-policy:
     image: alpine:latest

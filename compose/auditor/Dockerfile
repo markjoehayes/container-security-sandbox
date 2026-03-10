@@ -6,7 +6,3 @@ WORKDIR /auditor
 
 CMD ["tail", "-f", "/dev/null"]
 
-EOF
-
-# Copy your audit script
-cp tools/container_audit.py tools/ 2>/dev/null || echo "Please copy your audit script to tools/container_audit.py"

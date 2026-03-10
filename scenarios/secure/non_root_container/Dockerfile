@@ -1,8 +1,7 @@
-# scenarios/secure/root_container/Dockerfile
 FROM ubuntu:22.04
 
 # Create non-root user first (so we can use it for COPY)
-RUN groupadd -r appuser && useradd -r -g appuser appuser
+RUN useradd -m -s /bin/bash -u 1001 appuser
 
 # Install only necessary packages (minimal footprint)
 RUN apt-get update && apt-get install -y \
@@ -26,4 +25,4 @@ RUN echo "DB_PASSWORD=super_secret" > /etc/app_secrets.env && \
 USER appuser
 
 # Application runs as non-privileged user
-CMD ["./app.sh"]
+CMD ["sleep", "infinity"]
