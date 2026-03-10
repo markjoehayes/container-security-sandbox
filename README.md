@@ -123,51 +123,52 @@ git clone git@github.com:markjoehayes/container-security-sandbox.git
 cd container-security-sandbox
 ````
 
-### 2. Build Containers
+### 2. Launch the Complete Lab (Docker Compose)
 
-Build insecure container:
+# Build all containers
+docker-compose build
 
-```bash
-docker build -t test_insecure -f docker/insecure.Dockerfile .
-```
+# Start the entire environment
+docker-compose up -d
 
-Build secure container:
+# Verify all containers are running
+docker-compose ps
 
-```bash
-docker build -t test_secure -f docker/secure.Dockerfile .
-```
+### 3. Run Security Audits
 
----
+# Audit an insecure container
+python3 tools/container_audit.py sandbox-root-insecure
 
-### 3. Run Containers
+# Audit a secure container
+python3 tools/container_audit.py sandbox-nonroot-secure
 
-Insecure:
+# Audit all containers with JSON output
+for container in $(docker ps --format "{{.Names}}" | grep sandbox); do
+    python3 tools/container_audit.py $container --json
+done
 
-```bash
-docker run -d --name test_insecure --privileged test_insecure
-```
 
-Secure:
 
-```bash
-docker run -d --name test_secure \
-  --read-only \
-  --cap-drop ALL \
-  --security-opt no-new-privileges \
-  test_secure
-```
+### 4. Launch Attacks from Attacker Container
 
----
+# Enter the attacker container
+docker exec -it sandbox-attacker bash
 
-### 4. Run the Audit Tool
+# Scan the network
+./attacks/scan-network.sh
 
-```bash
-./tools/container_audit.py test_insecure
-```
+# Test for vulnerabilities
+./attacks/check-vulnerabilities.sh
 
-Example output:
+# Ping insecure containers
+ping -c 2 sandbox-root-insecure
 
-```
+### 5. View Audit Results Dashboard
+
+# Run the comparison dashboard
+./demos/audit_comparison.sh
+
+
 Auditing container: test_insecure
 ============================================================
 Running as root HIGH
