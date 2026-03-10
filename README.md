@@ -129,13 +129,13 @@ cd container-security-sandbox
 ```bash
 # build all containers
 docker-compose build
-```
 
 # Start the entire environment
 docker-compose up -d
 
 # Verify all containers are running
 docker-compose ps
+```
 
 ### 3. Run Security Audits
 
