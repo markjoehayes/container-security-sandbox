@@ -126,7 +126,10 @@ cd container-security-sandbox
 ### 2. Launch the Complete Lab (Docker Compose)
 
 # Build all containers
+
+```bash
 docker-compose build
+```
 
 # Start the entire environment
 docker-compose up -d
