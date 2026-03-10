@@ -139,6 +139,7 @@ docker-compose ps
 
 ### 3. Run Security Audits
 
+```bash
 # Audit an insecure container
 python3 tools/container_audit.py sandbox-root-insecure
 
@@ -149,11 +150,13 @@ python3 tools/container_audit.py sandbox-nonroot-secure
 for container in $(docker ps --format "{{.Names}}" | grep sandbox); do
     python3 tools/container_audit.py $container --json
 done
+```
 
 
 
 ### 4. Launch Attacks from Attacker Container
 
+```bash
 # Enter the attacker container
 docker exec -it sandbox-attacker bash
 
@@ -165,9 +168,11 @@ docker exec -it sandbox-attacker bash
 
 # Ping insecure containers
 ping -c 2 sandbox-root-insecure
+```
 
 ### 5. View Audit Results Dashboard
 
+```bash
 # Run the comparison dashboard
 ./demos/audit_comparison.sh
 
