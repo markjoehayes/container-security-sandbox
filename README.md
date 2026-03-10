@@ -16,6 +16,8 @@ This lab demonstrates:
 - How attackers escalate from container to host
 - How hardened configurations prevent abuse
 - How security checks can be automated
+- Multi-container orchestration with Docker Compose
+- Network segmentation and isolation
 
 ---
 
@@ -25,22 +27,48 @@ The project includes:
 
 - Insecure container configurations
 - Hardened container baselines
+- Attacker container, preconfigured with network scanning tools
+- Auditor container for continuous security monitoring
+- Network policy enforcer for isolation demonstration
 - Documented attack narratives
-- A custom container security audit tool
+- A custom container security audit tool (Python)
 - Automated demo scripts: secure, insecure and comparison
+- Docker Compose orchestration for one-command lab deployment
 
 ---
 
 ## Attacks Demonstrated
 
 ### 1. Root Container Abuse
-Running a container as root increases kernel attack surface.
+Running a container as root increases kernel attack surface. While root in a container can't directly access the host, it can:
+- Read all container secrets
+- Install additional tools
+- Attempt kernel exploits
 
 ### 2. Privileged Container Escalation
-Using `--privileged` removes most isolation controls.
+Using `--privileged` removes most isolation controls, allowing:
+- Host filesystem access
+- Device manipulation
+- Kernel module loading
+- Full host compromise
 
 ### 3. Docker Socket Mount → Host Control
-Mounting `/var/run/docker.sock` allows a container to control the Docker daemon (effectively root on host).
+Mounting `/var/run/docker.sock` allows a container to control the Docker daemon (effectively root on host):
+- Launch new privileged containers
+- Access all container data
+- Control host Docker operations
+
+### 4. Excessive Capabilities
+Adding capabilities like `CAP_SYS_ADMIN` allows:
+- Mounting filesystems
+- Manipulating network configuration
+- Bypassing filesystem permissions
+
+### 5. Writable Filesystem
+A writable root filesystem allows attackers to:
+- Modify binaries
+- Plant backdoors
+- Persist malicious code
 
 More attack scenarios are in progress.
 
@@ -55,6 +83,8 @@ The secure container configuration includes:
 - Read-only root filesystem
 - No Docker socket exposure
 - No privileged mode
+- No new privileges - Prevents privilege escalation
+- Temporary filesystem - Allows limited writes without persistence
 
 This baseline is used to validate mitigations.
 
@@ -80,6 +110,7 @@ It evaluates a running container for common security risks and assigns severity 
 - Docker socket mount
 - Read-only root filesystem
 - Linux capability drops
+- No-new-privileges setting
 
 ---
 
